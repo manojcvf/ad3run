@@ -43,6 +43,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Clique no botão Sair (Menu Inferior)
+    document.getElementById('btn-app-logout').addEventListener('click', (e) => {
+        e.preventDefault(); // Evita que a tela pule pro topo
+        localStorage.removeItem('app_logged_in');
+        
+        // Limpa os campos de senha
+        document.getElementById('app-user').value = '';
+        document.getElementById('app-pass').value = '';
+        document.getElementById('login-error').style.display = 'none';
+        
+        // Volta a tela de splash para o estado original
+        splashAction.style.display = 'block';
+        loginFormContainer.style.display = 'none';
+        
+        // Exibe a tela novamente com animação
+        splashScreen.style.display = 'flex';
+        setTimeout(() => {
+            splashScreen.style.opacity = '1';
+        }, 10);
+    });
+
     // --- LÓGICA DO INTERVALS.ICU ---
     const loginSection = document.getElementById('login-section');
     const workoutSection = document.getElementById('workout-section');
