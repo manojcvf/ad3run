@@ -15,25 +15,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginFormContainer = document.getElementById('login-form-container');
     const btnDoLogin = document.getElementById('btn-do-login');
 
-    // Verifica se o usuário já fez login no app antes
     if (localStorage.getItem('app_logged_in') === 'true') {
         splashScreen.style.display = 'none';
     }
 
-    // Clique no botão amarelo da tela inicial
     btnShowLogin.addEventListener('click', () => {
         splashAction.style.display = 'none';
         loginFormContainer.style.display = 'block';
     });
 
-    // Clique em Fazer Login
     btnDoLogin.addEventListener('click', () => {
         const user = document.getElementById('app-user').value.trim();
         const pass = document.getElementById('app-pass').value.trim();
 
         if (user === 'admin' && pass === 'admin') {
             localStorage.setItem('app_logged_in', 'true');
-            // Animação suave para sumir
             splashScreen.style.opacity = '0';
             setTimeout(() => {
                 splashScreen.style.display = 'none';
@@ -45,19 +41,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Clique no botão Sair (Menu Inferior)
     document.getElementById('btn-app-logout').addEventListener('click', (e) => {
-        e.preventDefault(); // Evita que a tela pule pro topo
+        e.preventDefault(); 
         localStorage.removeItem('app_logged_in');
         
-        // Limpa os campos de senha
         document.getElementById('app-user').value = '';
         document.getElementById('app-pass').value = '';
         document.getElementById('login-error').style.display = 'none';
         
-        // Volta a tela de splash para o estado original
         splashAction.style.display = 'block';
         loginFormContainer.style.display = 'none';
         
-        // Exibe a tela novamente com animação
         splashScreen.style.display = 'flex';
         setTimeout(() => {
             splashScreen.style.opacity = '1';
@@ -123,18 +116,20 @@ async function mostrarTreino(athleteId, apiKey) {
             
             const distancia = treino.distance ? (treino.distance / 1000).toFixed(1) + ' km' : '-- km';
             const tempo = treino.moving_time ? Math.round(treino.moving_time / 60) + ' min' : '-- min';
-            const tss = treino.tss ? Math.round(treino.tss) : '--';
+            
+            // Pega a descrição do Intervals ou coloca um texto padrão se estiver vazio
+            const descricao = treino.description ? treino.description : "Treino livre. Nenhuma descrição fornecida para hoje.";
             
             document.getElementById('workout-dist').innerText = distancia;
             document.getElementById('workout-dur').innerText = '~' + tempo;
-            document.getElementById('workout-tss').innerText = tss;
+            document.getElementById('workout-details').innerText = descricao;
             
         } else {
             document.getElementById('workout-title').innerText = "Dia de Descanso!";
             document.getElementById('workout-desc').innerText = "Aproveite para alongar e se hidratar.";
             document.getElementById('workout-dist').innerText = "--";
             document.getElementById('workout-dur').innerText = "--";
-            document.getElementById('workout-tss').innerText = "--";
+            document.getElementById('workout-details').innerText = "Hoje não há treinos programados na sua planilha.";
         }
     } catch (error) {
         console.error(error);
