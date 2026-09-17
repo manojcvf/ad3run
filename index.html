@@ -9,6 +9,30 @@
     <meta name="theme-color" content="#111111">
 </head>
 <body>
+
+    <!-- Tela Splash / Login do App -->
+    <div id="splash-screen" class="splash-container">
+        <div class="splash-spacer"></div>
+        
+        <div class="splash-logo">
+            <span class="logo-small">A C A D E M I A</span>
+            <h1 class="logo-large">AD<span style="font-size: 60px; vertical-align: top;">3</span></h1>
+        </div>
+        
+        <div class="splash-bottom">
+            <div id="splash-action">
+                <button id="btn-show-login" class="btn-splash">Entrar</button>
+            </div>
+
+            <div id="login-form-container" style="display: none;">
+                <input type="text" id="app-user" class="input-splash" placeholder="Usuário (admin)">
+                <input type="password" id="app-pass" class="input-splash" placeholder="Senha (admin)">
+                <button id="btn-do-login" class="btn-splash">Fazer Login</button>
+                <p id="login-error" style="color: #ff4d4d; font-size: 12px; margin-top: 10px; display: none;">Usuário ou senha inválidos.</p>
+            </div>
+        </div>
+    </div>
+
     <header class="app-header">
         <h1>Início</h1>
         <div class="header-icons">🔔 ≡</div>
@@ -31,7 +55,7 @@
             <button id="btn-connect" class="btn-primary" style="margin-top: 10px;">Sincronizar</button>
         </div>
 
-        <!-- Card de Treino do Dia (Fica oculto até logar) -->
+        <!-- Card de Treino do Dia (Fica oculto até logar no Intervals) -->
         <div id="workout-section" class="workout-card" style="display: none;">
             <div class="card-badge">TREINO DE HOJE</div>
             <div class="workout-header">
