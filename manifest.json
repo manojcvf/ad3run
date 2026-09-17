@@ -1,0 +1,22 @@
+{
+  "name": "AD3 Run - Treinamento Híbrido",
+  "short_name": "AD3 Run",
+  "description": "Onde a força da academia encontra a corrida de rua.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#111111",
+  "theme_color": "#c3ff00",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

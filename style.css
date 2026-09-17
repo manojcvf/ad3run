@@ -1,0 +1,111 @@
+:root {
+    --bg-color: #111111;
+    --card-bg: #1e1e1e;
+    --accent-color: #c3ff00;
+    --text-main: #ffffff;
+    --text-muted: #888888;
+}
+
+* {
+    margin: 0; padding: 0; box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    max-width: 480px; /* Trava a largura com tamanho de celular */
+    margin: 0 auto;   /* Centraliza o app no meio da tela do monitor */
+    border-inline: 1px solid #333; /* Cria uma borda lateral discreta no PC */
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    align-items: center;
+}
+
+.app-content {
+    flex: 1;
+    padding: 0 20px;
+    overflow-y: auto;
+}
+
+/* Calendário */
+.week-calendar {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    color: var(--text-muted);
+}
+.week-calendar .active {
+    color: var(--bg-color);
+    background-color: var(--accent-color);
+    width: 30px; height: 30px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    font-weight: bold;
+}
+
+/* Card de Treino */
+.workout-card {
+    background-color: var(--card-bg);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.card-badge {
+    background-color: var(--accent-color);
+    color: #000;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 8px;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+.workout-header {
+    display: flex; align-items: center; margin-bottom: 20px;
+}
+.workout-header .icon { font-size: 24px; margin-right: 15px; color: var(--accent-color); }
+.workout-title h2 { font-size: 18px; margin-bottom: 4px; }
+.workout-title p { font-size: 12px; color: var(--text-muted); }
+
+.workout-stats {
+    display: flex; justify-content: space-between; margin-bottom: 25px;
+}
+.stat { text-align: center; }
+.stat .label { display: block; font-size: 10px; color: var(--text-muted); margin-bottom: 5px; }
+.stat .value { font-size: 16px; font-weight: bold; }
+
+.btn-primary {
+    width: 100%;
+    background-color: var(--accent-color);
+    color: #000;
+    border: none;
+    padding: 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Menu Inferior */
+.bottom-nav {
+    display: flex;
+    justify-content: space-around;
+    background-color: var(--card-bg);
+    padding: 10px 0 20px 0;
+    border-top: 1px solid #333;
+}
+.nav-item {
+    text-align: center;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 10px;
+}
+.nav-item.active { color: var(--accent-color); }
