@@ -20,37 +20,49 @@
             <span>S</span> <span class="active">T</span> <span>Q</span> <span>Q</span> <span>S</span> <span>S</span> <span>D</span>
         </div>
 
-        <!-- Card de Treino do Dia -->
-        <div class="workout-card">
+        <!-- Área de Login Intervals.icu -->
+        <div id="login-section" class="workout-card">
+            <h2 style="margin-bottom: 5px;">Conectar Intervals.icu</h2>
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 20px;">Insira seu ID de atleta e API Key para sincronizar sua planilha.</p>
+            
+            <input type="text" id="intervals-id" class="input-field" placeholder="Athlete ID (ex: i123456)">
+            <input type="password" id="intervals-key" class="input-field" placeholder="API Key">
+            
+            <button id="btn-connect" class="btn-primary" style="margin-top: 10px;">Sincronizar</button>
+        </div>
+
+        <!-- Card de Treino do Dia (Fica oculto até logar) -->
+        <div id="workout-section" class="workout-card" style="display: none;">
             <div class="card-badge">TREINO DE HOJE</div>
             <div class="workout-header">
                 <span class="icon">🏃</span>
                 <div class="workout-title">
-                    <h2>Corrida intervalada</h2>
-                    <p>Terça • Bloco AD3 Run • Prof. Cesar</p>
+                    <h2 id="workout-title">Carregando...</h2>
+                    <p id="workout-desc">Buscando dados no Intervals.icu</p>
                 </div>
             </div>
             
             <div class="workout-stats">
                 <div class="stat">
                     <span class="label">Distância</span>
-                    <span class="value">5 km</span>
+                    <span class="value" id="workout-dist">-- km</span>
                 </div>
                 <div class="stat">
-                    <span class="label">Ritmo-alvo</span>
-                    <span class="value">5:30/km</span>
+                    <span class="label">Carga (TSS)</span>
+                    <span class="value" id="workout-tss">--</span>
                 </div>
                 <div class="stat">
                     <span class="label">Duração</span>
-                    <span class="value">~40 min</span>
+                    <span class="value" id="workout-dur">-- min</span>
                 </div>
             </div>
 
-            <button class="btn-primary">Iniciar treino</button>
+            <button id="btn-start-workout" class="btn-primary">Iniciar treino</button>
+            <button id="btn-logout" class="btn-secondary">Desconectar</button>
         </div>
     </main>
 
-    <!-- Menu Inferior (Bottom Nav) -->
+    <!-- Menu Inferior -->
     <nav class="bottom-nav">
         <a href="#" class="nav-item active">🏠<br>Início</a>
         <a href="#" class="nav-item">🔲<br>Timeline</a>
