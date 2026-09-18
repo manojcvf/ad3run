@@ -13,16 +13,16 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* Área externa da página (PC / Monitor) */
+/* Área externa da janela (PC / Monitores) */
 html {
     background-color: #050505;
-    min-height: 100vh;
+    min-height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* Moldura Mobile centralizada */
+/* Moldura Mobile */
 body {
     width: 100%;
     max-width: 420px;
@@ -122,13 +122,13 @@ body {
     font-size: 14px;
 }
 
-/* --- TOPO / HEADER --- */
+/* --- CABEÇALHO --- */
 .app-header {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 24px;
+    padding: 18px 24px 12px 24px;
     flex-shrink: 0;
 }
 
@@ -144,7 +144,7 @@ body {
     font-size: 20px;
 }
 
-/* --- ÁREA DE CONTEÚDO PRINCIPAL --- */
+/* --- CONTEÚDO PRINCIPAL COM SCROLL --- */
 .app-content {
     flex: 1;
     width: 100%;
@@ -163,7 +163,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
     color: var(--text-muted);
     font-weight: 600;
 }
@@ -189,7 +189,7 @@ body {
     background-color: var(--card-bg);
     border-radius: 16px;
     padding: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 }
 
 .card-badge {
@@ -206,7 +206,7 @@ body {
 .workout-header {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
 .workout-header .icon {
@@ -227,7 +227,7 @@ body {
 .workout-stats {
     display: flex;
     justify-content: space-around;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
 .stat { text-align: center; }
@@ -236,9 +236,9 @@ body {
 
 .workout-description {
     background-color: var(--bg-color);
-    padding: 15px;
+    padding: 14px;
     border-radius: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
     font-size: 13px;
     color: #cccccc;
     line-height: 1.5;
@@ -280,23 +280,23 @@ body {
     background-color: transparent;
     color: var(--text-muted);
     border: none;
-    padding: 14px;
+    padding: 12px;
     border-radius: 8px;
     font-size: 13px;
     cursor: pointer;
 }
 
-/* --- BARRA INFERIOR (GRID TOTAL DE 4 COLUNAS) --- */
+/* --- BARRA INFERIOR (PROTEÇÃO CONTRA CORTES MOBILE) --- */
 .bottom-nav {
     display: grid !important;
     grid-template-columns: repeat(4, 1fr) !important;
     width: 100% !important;
-    min-width: 100% !important;
     background-color: var(--card-bg);
-    padding: 12px 0 16px 0;
+    padding-top: 10px;
+    /* Adiciona padding dinâmico para a barra de gestos do Android/iOS */
+    padding-bottom: max(14px, env(safe-area-inset-bottom));
     border-top: 1px solid #2a2a2a;
     flex-shrink: 0;
-    margin: 0;
 }
 
 .nav-item {
@@ -306,7 +306,7 @@ body {
     justify-content: center !important;
     text-decoration: none;
     color: var(--text-muted);
-    gap: 4px;
+    gap: 3px;
 }
 
 .nav-icon {
@@ -323,14 +323,17 @@ body {
     color: var(--accent-color);
 }
 
-/* Telas Mobile nativas */
+/* --- COMPORTAMENTO NO MOBILE --- */
 @media (max-width: 480px) {
     html {
         background-color: var(--bg-color);
+        height: 100dvh;
     }
+
     body {
-        max-height: 100vh;
-        height: 100vh;
+        /* Usa a altura dinâmica real da tela visível */
+        height: 100dvh;
+        max-height: 100dvh;
         border-radius: 0;
         border: none;
         box-shadow: none;
