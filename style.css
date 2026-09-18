@@ -1,194 +1,48 @@
-:root {
-    --bg-color: #111111;
-    --card-bg: #1e1e1e;
-    --accent-color: #f7ec35;
-    --text-main: #ffffff;
-    --text-muted: #888888;
+/* Fundo geral da janela (Fica invisível no celular, mas cria o fundo no PC) */
+html {
+    background-color: #050505; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
-* {
-    margin: 0; padding: 0; box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-}
-
+/* Configuração base (Celular) */
 body {
-    max-width: 480px; 
+    width: 100%;
+    max-width: 480px; /* Segura a proporção em telas médias */
     margin: 0 auto;   
-    border-inline: 1px solid #333; 
     background-color: var(--bg-color);
     color: var(--text-main);
     display: flex;
     flex-direction: column;
     height: 100vh;
     position: relative;
+    box-shadow: 0 0 30px rgba(0,0,0,0.8); /* Dá um efeito 3D no PC */
 }
 
-/* --- TELA DE SPLASH / BOAS VINDAS --- */
-.splash-container {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-color: #5e5e5e; 
-    z-index: 9999;
-    display: flex; flex-direction: column; justify-content: space-between;
-    padding: 40px 20px;
-    transition: opacity 0.4s ease;
+/* --- REGRAS DE PROPORÇÃO PARA MONITORES (PC / Notebooks) --- */
+@media (min-width: 768px) {
+    body {
+        max-width: 800px; /* Permite que o app fique mais largo, como um painel */
+        height: 90vh; /* Desgruda do topo e do fundo do monitor */
+        border-radius: 20px; /* Arredonda as bordas no PC */
+        border: 1px solid #333;
+        overflow: hidden;
+    }
+
+    /* Afasta um pouco os itens nas laterais quando a tela for larga */
+    .app-content {
+        padding: 20px 60px;
+    }
+
+    /* Centraliza melhor os dados do treino no monitor */
+    .workout-stats {
+        justify-content: space-evenly; 
+    }
+
+    /* Aumenta levemente a fonte do título no PC */
+    .workout-title h2 {
+        font-size: 22px;
+    }
 }
-
-.splash-spacer { flex: 1; }
-
-.splash-logo {
-    flex: 1;
-    display: flex; flex-direction: column; justify-content: center; align-items: center;
-}
-
-.logo-small {
-    color: var(--accent-color);
-    font-size: 14px;
-    letter-spacing: 16px; 
-    text-transform: uppercase;
-    margin-bottom: -5px;
-    margin-right: -16px; 
-}
-
-.logo-large {
-    color: var(--accent-color);
-    font-size: 90px;
-    font-weight: 900;
-    line-height: 1;
-    letter-spacing: -4px;
-    display: flex;
-    align-items: flex-start;
-}
-
-.logo-large span {
-    font-size: 50px;
-    margin-top: 6px; 
-    margin-left: 2px;
-}
-
-.splash-bottom {
-    flex: 1;
-    display: flex; flex-direction: column; justify-content: flex-end;
-    width: 100%; text-align: center;
-}
-
-.btn-splash {
-    width: 100%;
-    background-color: var(--accent-color);
-    color: #111;
-    border: none;
-    padding: 16px;
-    border-radius: 30px;
-    font-weight: bold;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.input-splash {
-    width: 100%;
-    padding: 14px;
-    margin-bottom: 12px;
-    border-radius: 8px;
-    border: none;
-    background-color: #ffffff;
-    color: #000000;
-    font-size: 14px;
-}
-/* ------------------------------------ */
-
-.app-header {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-    align-items: center;
-}
-
-.app-content {
-    flex: 1;
-    padding: 0 20px;
-    overflow-y: auto;
-}
-
-.week-calendar {
-    display: flex; justify-content: space-between;
-    margin-bottom: 20px; color: var(--text-muted);
-}
-
-.week-calendar .active {
-    color: var(--bg-color);
-    background-color: var(--accent-color);
-    width: 30px; height: 30px;
-    display: flex; align-items: center; justify-content: center;
-    border-radius: 50%; font-weight: bold;
-}
-
-.workout-card {
-    background-color: var(--card-bg);
-    border-radius: 16px; padding: 20px; margin-bottom: 20px;
-}
-
-.card-badge {
-    background-color: var(--accent-color);
-    color: #000; font-size: 10px; font-weight: bold;
-    padding: 4px 8px; border-radius: 8px;
-    display: inline-block; margin-bottom: 15px;
-}
-
-.workout-header {
-    display: flex; align-items: center; margin-bottom: 20px;
-}
-
-.workout-header .icon { font-size: 24px; margin-right: 15px; color: var(--accent-color); }
-.workout-title h2 { font-size: 18px; margin-bottom: 4px; }
-.workout-title p { font-size: 12px; color: var(--text-muted); }
-
-.workout-stats {
-    display: flex; justify-content: space-around; margin-bottom: 20px;
-}
-
-.stat { text-align: center; }
-.stat .label { display: block; font-size: 10px; color: var(--text-muted); margin-bottom: 5px; }
-.stat .value { font-size: 16px; font-weight: bold; }
-
-/* Nova área de descrição do treino */
-.workout-description {
-    background-color: var(--bg-color);
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    font-size: 13px;
-    color: #cccccc;
-    line-height: 1.5;
-    white-space: pre-wrap; /* Mantém as quebras de linha reais do Intervals */
-    border: 1px solid #333;
-}
-
-.input-field {
-    width: 100%; padding: 14px; margin-bottom: 12px;
-    border-radius: 8px; border: 1px solid #333;
-    background-color: var(--bg-color); color: var(--text-main); font-size: 14px;
-}
-.input-field:focus { outline: none; border-color: var(--accent-color); }
-
-.btn-primary {
-    width: 100%; background-color: var(--accent-color);
-    color: #000; border: none; padding: 15px;
-    border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer;
-}
-
-.btn-secondary {
-    width: 100%; background-color: transparent;
-    color: var(--text-muted); border: none; padding: 15px;
-    border-radius: 8px; font-weight: normal; font-size: 14px; cursor: pointer; margin-top: 5px;
-}
-
-.bottom-nav {
-    display: flex; justify-content: space-around;
-    background-color: var(--card-bg); padding: 10px 0 20px 0;
-    border-top: 1px solid #333;
-}
-
-.nav-item {
-    text-align: center; color: var(--text-muted); text-decoration: none; font-size: 10px;
-}
-.nav-item.active { color: var(--accent-color); }
