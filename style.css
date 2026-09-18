@@ -11,42 +11,31 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* Fundo geral da janela (Fica invisível no celular, mas cria o fundo no PC) */
-html {
-    background-color: #050505; 
+/* Força o navegador do PC a centralizar o app como se fosse um celular de pé */
+html, body {
+    height: 100%;
+    margin: 0;
+    background-color: #050505;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    overflow: hidden; /* Evita barras de rolagem estranhas na janela inteira */
 }
 
-/* Configuração base (Celular) */
+/* O container principal do App (Sempre em proporção de celular) */
 body {
     width: 100%;
-    max-width: 480px; 
-    margin: 0 auto;   
+    max-width: 420px; /* Largura perfeita de um smartphone */
+    height: 100vh;
+    max-height: 880px; /* Altura máxima para não esticar no monitor */
     background-color: var(--bg-color);
     color: var(--text-main);
     display: flex;
     flex-direction: column;
-    height: 100vh;
     position: relative;
-    box-shadow: 0 0 30px rgba(0,0,0,0.8);
-}
-
-/* --- REGRAS DE PROPORÇÃO PARA MONITORES (PC / Notebooks) --- */
-@media (min-width: 768px) {
-    body {
-        max-width: 800px;
-        height: 90vh;
-        border-radius: 20px;
-        border: 1px solid #333;
-        overflow: hidden;
-    }
-    
-    .app-content { padding: 20px 60px; }
-    .workout-stats { justify-content: space-evenly; }
-    .workout-title h2 { font-size: 22px; }
+    border-radius: 24px; /* Cantos arredondados elegantes no PC */
+    border: 1px solid #333;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
 }
 
 /* --- TELA DE SPLASH / BOAS VINDAS --- */
@@ -55,6 +44,7 @@ body {
     background-color: #5e5e5e; z-index: 9999;
     display: flex; flex-direction: column; justify-content: space-between;
     padding: 40px 20px; transition: opacity 0.4s ease;
+    border-radius: 24px;
 }
 
 .splash-spacer { flex: 1; }
@@ -91,8 +81,8 @@ body {
 }
 
 /* --- INTERFACE PRINCIPAL --- */
-.app-header { display: flex; justify-content: space-between; padding: 20px; align-items: center; }
-.app-content { flex: 1; padding: 0 20px; overflow-y: auto; }
+.app-header { display: flex; justify-content: space-between; padding: 20px; align-items: center; flex-shrink: 0; }
+.app-content { flex: 1; padding: 0 20px; overflow-y: auto; } /* A rolagem fica contida aqui dentro */
 
 .week-calendar { display: flex; justify-content: space-between; margin-bottom: 20px; color: var(--text-muted); }
 .week-calendar .active {
@@ -140,7 +130,7 @@ body {
 
 .bottom-nav {
     display: flex; justify-content: space-around; background-color: var(--card-bg); padding: 10px 0 20px 0;
-    border-top: 1px solid #333;
+    border-top: 1px solid #333; flex-shrink: 0; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px;
 }
 
 .nav-item { text-align: center; color: var(--text-muted); text-decoration: none; font-size: 10px; }
