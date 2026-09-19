@@ -1,14 +1,11 @@
-// Registro do Service Worker (Offline)
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-            .catch(error => console.log('Falha no SW:', error));
+        navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW error:', err));
     });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    
-    // --- LÓGICA DO SPLASH / LOGIN DO APP ---
+    // Splash / Login
     const splashScreen = document.getElementById('splash-screen');
     const btnShowLogin = document.getElementById('btn-show-login');
     const splashAction = document.getElementById('splash-action');
@@ -31,109 +28,122 @@ document.addEventListener('DOMContentLoaded', () => {
         if (user === 'admin' && pass === 'admin') {
             localStorage.setItem('app_logged_in', 'true');
             splashScreen.style.opacity = '0';
-            setTimeout(() => {
-                splashScreen.style.display = 'none';
-            }, 400);
+            setTimeout(() => { splashScreen.style.display = 'none'; }, 400);
         } else {
             document.getElementById('login-error').style.display = 'block';
         }
     });
 
-    // Clique no botão Sair (Menu Inferior)
     document.getElementById('btn-app-logout').addEventListener('click', (e) => {
-        e.preventDefault(); 
+        e.preventDefault();
         localStorage.removeItem('app_logged_in');
-        
         document.getElementById('app-user').value = '';
         document.getElementById('app-pass').value = '';
         document.getElementById('login-error').style.display = 'none';
-        
         splashAction.style.display = 'block';
         loginFormContainer.style.display = 'none';
-        
         splashScreen.style.display = 'flex';
-        setTimeout(() => {
-            splashScreen.style.opacity = '1';
-        }, 10);
+        setTimeout(() => { splashScreen.style.opacity = '1'; }, 10);
     });
 
-    // --- LÓGICA DO INTERVALS.ICU ---
-    const loginSection = document.getElementById('login-section');
-    const workoutSection = document.getElementById('workout-section');
-    
+    // Intervals.icu
     const savedId = localStorage.getItem('intervals_id');
     const savedKey = localStorage.getItem('intervals_key');
 
     if (savedId && savedKey) {
-        mostrarTreino(savedId, savedKey);
+        carregarTreino(savedId, savedKey);
     }
 
     document.getElementById('btn-connect').addEventListener('click', () => {
         const id = document.getElementById('intervals-id').value.trim();
         const key = document.getElementById('intervals-key').value.trim();
-        
         if (id && key) {
             localStorage.setItem('intervals_id', id);
             localStorage.setItem('intervals_key', key);
-            mostrarTreino(id, key);
+            carregarTreino(id, key);
         } else {
-            alert("Por favor, preencha o ID e a API Key.");
+            alert('Por favor, informe Athlete ID e API Key.');
         }
     });
 
     document.getElementById('btn-logout').addEventListener('click', () => {
         localStorage.removeItem('intervals_id');
         localStorage.removeItem('intervals_key');
-        workoutSection.style.display = 'none';
-        loginSection.style.display = 'block';
+        document.getElementById('workout-card-training').style.display = 'none';
+        document.getElementById('workout-card-rest').style.display = 'none';
+        document.getElementById('login-section').style.display = 'block';
     });
 });
 
-async function mostrarTreino(athleteId, apiKey) {
-    document.getElementById('login-section').style.display = 'none';
-    document.getElementById('workout-section').style.display = 'block';
-    
+async function carregarTreino(athleteId, apiKey) {
+    const loginSec = document.getElementById('login-section');
+    const cardTraining = document.getElementById('workout-card-training');
+    const cardRest = document.getElementById('workout-card-rest');
+    const dayToday = document.getElementById('day-today');
+
+    loginSec.style.display = 'none';
+
     try {
         const dataHoje = new Date().toISOString().split('T')[0];
         const token = btoa('API_KEY:' + apiKey);
-        
         const url = `https://intervals.icu/api/v1/athlete/${athleteId}/events?oldest=${dataHoje}&newest=${dataHoje}`;
-        
+
         const response = await fetch(url, {
-            method: 'GET',
             headers: { 'Authorization': 'Basic ' + token }
         });
 
-        if (!response.ok) throw new Error("Credenciais inválidas");
+        if (!response.ok) throw new Error('Falha na autenticação');
 
         const eventos = await response.json();
-        
+
         if (eventos && eventos.length > 0) {
             const treino = eventos[0];
             
-            document.getElementById('workout-title').innerText = treino.name || "Treino Estruturado";
-            document.getElementById('workout-desc').innerText = `Bloco AD3 Run • Sincronizado do Intervals`;
+            // Ativa o layout Amarelo (Treino)
+            cardRest.style.display = 'none';
+            cardTraining.style.display = 'block';
+            dayToday.className = 'day-col active';
+
+            document.getElementById('training-title').innerText = treino.name || 'Corrida intervalada';
             
-            const distancia = treino.distance ? (treino.distance / 1000).toFixed(1) + ' km' : '-- km';
-            const tempo = treino.moving_time ? Math.round(treino.moving_time / 60) + ' min' : '-- min';
+            const dist = treino.distance ? (treino.distance / 1000).toFixed(1) + ' km' : '-- km';
+            const dur = treino.moving_time ? Math.round(treino.moving_time / 60) + ' min' : '~40 min';
             
-            // Pega a descrição do Intervals ou coloca um texto padrão se estiver vazio
-            const descricao = treino.description ? treino.description : "Treino livre. Nenhuma descrição fornecida para hoje.";
-            
-            document.getElementById('workout-dist').innerText = distancia;
-            document.getElementById('workout-dur').innerText = '~' + tempo;
-            document.getElementById('workout-details').innerText = descricao;
-            
+            // Calcula pace aproximado se houver distância e tempo
+            let paceStr = '5:30/km';
+            if (treino.distance && treino.moving_time) {
+                const totalSec = treino.moving_time;
+                const km = treino.distance / 1000;
+                const secPerKm = totalSec / km;
+                const min = Math.floor(secPerKm / 60);
+                const sec = Math.floor(secPerKm % 60).toString().padStart(2, '0');
+                paceStr = `${min}:${sec}/km`;
+            }
+
+            document.getElementById('training-dist').innerText = dist;
+            document.getElementById('training-pace').innerText = paceStr;
+            document.getElementById('training-dur').innerText = dur;
+
+            const descBox = document.getElementById('training-desc-box');
+            if (treino.description) {
+                descBox.style.display = 'block';
+                document.getElementById('training-desc-text').innerText = treino.description;
+            } else {
+                descBox.style.display = 'none';
+            }
+
         } else {
-            document.getElementById('workout-title').innerText = "Dia de Descanso!";
-            document.getElementById('workout-desc').innerText = "Aproveite para alongar e se hidratar.";
-            document.getElementById('workout-dist').innerText = "--";
-            document.getElementById('workout-dur').innerText = "--";
-            document.getElementById('workout-details').innerText = "Hoje não há treinos programados na sua planilha.";
+            // Ativa o layout Azul (Descanso)
+            cardTraining.style.display = 'none';
+            cardRest.style.display = 'block';
+            dayToday.className = 'day-col active-rest';
         }
+
     } catch (error) {
         console.error(error);
-        document.getElementById('workout-title').innerText = "Erro ao carregar";
-        document.getElementById('workout-desc').innerText = "Verifique sua API Key ou ID.";
+        loginSec.style.display = 'block';
+        cardTraining.style.display = 'none';
+        cardRest.style.display = 'none';
+        alert('Não foi possível sincronizar com o Intervals.icu. Verifique suas credenciais.');
     }
 }

@@ -2,28 +2,25 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>AD3 Run</title>
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="style.css">
-    <meta name="theme-color" content="#111111">
+    <meta name="theme-color" content="#0d0e12">
 </head>
 <body>
 
-    <!-- Tela Splash / Login do App -->
+    <!-- Splash / Login -->
     <div id="splash-screen" class="splash-container">
         <div class="splash-spacer"></div>
-        
         <div class="splash-logo">
             <span class="logo-small">ACADEMIA</span>
             <h1 class="logo-large">AD<span>3</span></h1>
         </div>
-        
         <div class="splash-bottom">
             <div id="splash-action">
                 <button id="btn-show-login" class="btn-splash">Entrar</button>
             </div>
-
             <div id="login-form-container" style="display: none;">
                 <input type="text" id="app-user" class="input-splash" placeholder="Usuário (admin)">
                 <input type="password" id="app-pass" class="input-splash" placeholder="Senha (admin)">
@@ -33,65 +30,135 @@
         </div>
     </div>
 
-    <!-- Cabeçalho Superior -->
+    <!-- Cabeçalho -->
     <header class="app-header">
         <h1>Início</h1>
-        <div class="header-icons">🔔 ≡</div>
+        <div class="header-icons">
+            <span class="bell-icon">🔔</span>
+            <span class="menu-icon">≡</span>
+        </div>
     </header>
 
-    <!-- Conteúdo Principal com Rolagem Interna -->
     <main class="app-content">
         <!-- Calendário da Semana -->
         <div class="week-calendar">
-            <span>S</span> <span class="active">T</span> <span>Q</span> <span>Q</span> <span>S</span> <span>S</span> <span>D</span>
+            <div class="day-col"><span>S</span><span class="dot"></span></div>
+            <div class="day-col active" id="day-today"><span class="day-badge">T</span></div>
+            <div class="day-col"><span>Q</span></div>
+            <div class="day-col"><span>Q</span></div>
+            <div class="day-col"><span>S</span></div>
+            <div class="day-col"><span>S</span></div>
+            <div class="day-col"><span>D</span></div>
         </div>
 
-        <!-- Área de Login Intervals.icu -->
+        <!-- Autenticação Intervals.icu -->
         <div id="login-section" class="workout-card">
-            <h2 style="margin-bottom: 5px;">Conectar Intervals.icu</h2>
-            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 20px;">Insira seu ID de atleta e API Key para sincronizar sua planilha.</p>
-            
+            <h2 style="font-size: 16px; margin-bottom: 6px;">Conectar Intervals.icu</h2>
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">Insira seu Athlete ID e API Key para sincronizar seus treinos.</p>
             <input type="text" id="intervals-id" class="input-field" placeholder="Athlete ID (ex: i123456)">
             <input type="password" id="intervals-key" class="input-field" placeholder="API Key">
-            
-            <button id="btn-connect" class="btn-primary" style="margin-top: 10px;">Sincronizar</button>
+            <button id="btn-connect" class="btn-primary" style="margin-top: 6px;">Sincronizar Planilha</button>
         </div>
 
-        <!-- Card de Treino do Dia -->
-        <div id="workout-section" class="workout-card" style="display: none;">
-            <div class="card-badge">TREINO DE HOJE</div>
-            <div class="workout-header">
-                <span class="icon">🏃</span>
-                <div class="workout-title">
-                    <h2 id="workout-title">Carregando...</h2>
-                    <p id="workout-desc">Buscando dados no Intervals.icu</p>
-                </div>
-            </div>
+        <!-- CARD 1: DIA DE TREINO (Amarelo) -->
+        <div id="workout-card-training" class="card-proposal training-theme" style="display: none;">
+            <div class="badge-tag">TREINO DE HOJE</div>
             
-            <div class="workout-stats">
-                <div class="stat">
-                    <span class="label">Distância</span>
-                    <span class="value" id="workout-dist">-- km</span>
-                </div>
-                <div class="stat">
-                    <span class="label">Duração Média</span>
-                    <span class="value" id="workout-dur">-- min</span>
+            <div class="card-main-header">
+                <div class="avatar-circle">🏃</div>
+                <div class="card-title-group">
+                    <h2 id="training-title">Carregando...</h2>
+                    <p id="training-subtitle">Terça • Bloco AD3 Run • Prof. Cesar</p>
                 </div>
             </div>
 
-            <!-- Descrição e Blocos do Treino -->
-            <div class="workout-description">
-                <p id="workout-details">Carregando descrição do treino...</p>
+            <div class="metrics-grid">
+                <div class="metric-item">
+                    <span class="m-label">Distância</span>
+                    <span class="m-value" id="training-dist">-- km</span>
+                </div>
+                <div class="metric-item">
+                    <span class="m-label">Ritmo alvo</span>
+                    <span class="m-value" id="training-pace">--</span>
+                </div>
+                <div class="metric-item">
+                    <span class="m-label">Duração</span>
+                    <span class="m-value" id="training-dur">-- min</span>
+                </div>
             </div>
 
-            <button id="btn-logout" class="btn-secondary">Desconectar do Intervals</button>
+            <div class="progress-section">
+                <div class="progress-label">
+                    <span>3 de 5 treinos esta semana</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" style="width: 60%;"></div>
+                </div>
+            </div>
+
+            <div class="workout-desc-box" id="training-desc-box">
+                <p id="training-desc-text">Carregando descrição...</p>
+            </div>
+
+            <button id="btn-start-training" class="btn-action-pill">Iniciar treino</button>
         </div>
+
+        <!-- CARD 2: DIA DE DESCANSO (Azul) -->
+        <div id="workout-card-rest" class="card-proposal rest-theme" style="display: none;">
+            <div class="badge-tag">DESCANSO HOJE</div>
+            
+            <div class="card-main-header">
+                <div class="avatar-circle">🌙</div>
+                <div class="card-title-group">
+                    <h2>Dia de descanso</h2>
+                    <p>Terça • Bloco AD3 Run • Prof. Cesar</p>
+                </div>
+            </div>
+
+            <p class="rest-message">
+                Sem corrida hoje. Aproveite para alongar, hidratar bem e dormir cedo — a recuperação também faz parte do treino.
+            </p>
+
+            <div class="recovery-pills-row">
+                <div class="pill-rec">
+                    <span class="rec-icon">💧</span>
+                    <span class="rec-name">Hidratação</span>
+                </div>
+                <div class="pill-rec">
+                    <span class="rec-icon">⚡</span>
+                    <span class="rec-name">Recuperação</span>
+                </div>
+                <div class="pill-rec">
+                    <span class="rec-icon">🛏️</span>
+                    <span class="rec-name">Sono</span>
+                </div>
+            </div>
+
+            <button id="btn-see-tomorrow" class="btn-outline-pill">Ver treino de amanhã</button>
+        </div>
+
+        <!-- SEÇÃO FAVORITOS -->
+        <div class="section-favoritos">
+            <h3>Favoritos</h3>
+            <div class="favoritos-grid">
+                <div class="fav-card">
+                    <span class="fav-icon">🛒</span>
+                    <span class="fav-label">Comprar</span>
+                </div>
+                <div class="fav-card">
+                    <span class="fav-icon">👤</span>
+                    <span class="fav-label">Dados pessoais</span>
+                </div>
+            </div>
+        </div>
+
+        <button id="btn-logout" class="btn-disconnect">Desconectar do Intervals</button>
     </main>
 
-    <!-- Menu Inferior (Navegação em Grid) -->
+    <!-- Barra Inferior -->
     <nav class="bottom-nav">
         <a href="#" class="nav-item active">
-            <span class="nav-icon">🏠</span>
+            <div class="nav-pill-active">🏠</div>
             <span class="nav-label">Início</span>
         </a>
         <a href="#" class="nav-item">
